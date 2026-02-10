@@ -53,6 +53,19 @@ describe('Hash map', () => {
       hash.set('grape', 'purple');
 
       expect(hash.get('hat')).toBe(null);
-    })
+    });
+  });
+
+  // not necessary, just to make sure the boolean conversion
+  describe('Has', () => {
+    test('Returns true for existing key', () => {
+      hash.set('apple', 'red');
+
+      expect(hash.has('apple')).toBe(true);
+    });
+
+    test('Returns false for non existing key', () => {
+      expect(hash.has('apple')).toBe(false);
+    });
   });
 });

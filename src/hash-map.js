@@ -81,4 +81,9 @@ export class HashMap {
 
     return null;
   }
+
+  has(key) {
+    //convert the result of get() into boolean
+    return !!this.get(key);
+  }
 }
