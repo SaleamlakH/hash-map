@@ -30,4 +30,37 @@ export class HashMap {
   length() {
     return this.#length;
   }
+
+  set(key, value) {
+    const hashCode = this.#hash(key);
+
+    // Add a new node if it is empty
+    const bucket = this.#array[hashCode];
+    if (!bucket) {
+      const node = new Node(key, value);
+
+      this.#array[hashCode] = node;
+      this.#length++;
+      return;
+    }
+
+    // traverse the linked list of the bucket
+    let node = bucket;
+
+    // track the last node to append a node if 
+    // there is no matching keys
+    let lastNode = node;
+    while (node) {
+      if (node.key === key) {
+        node.value = value;
+        return;
+      }
+
+      lastNode = node;
+      node = node.nextNode;
+    }
+
+    lastNode.nextNode = new Node(key, value);
+    this.#length++;
+  }
 }
