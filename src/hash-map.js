@@ -47,7 +47,7 @@ export class HashMap {
     // traverse the linked list of the bucket
     let node = bucket;
 
-    // track the last node to append a node if 
+    // track the last node to append a node if
     // there is no matching keys
     let lastNode = node;
     while (node) {
@@ -62,5 +62,23 @@ export class HashMap {
 
     lastNode.nextNode = new Node(key, value);
     this.#length++;
+  }
+
+  get(key) {
+    const hashCode = this.#hash(key);
+
+    let node = this.#array[hashCode];
+    if (!node) return null;
+
+    // traverse over the list
+    while (node) {
+      if (node.key === key) {
+        return node.value;
+      }
+
+      node = node.nextNode;
+    }
+
+    return null;
   }
 }
