@@ -26,4 +26,8 @@ export class HashMap {
 
     return hashCode;
   }
+
+  length() {
+    return this.#length;
+  }
 }
