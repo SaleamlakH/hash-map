@@ -155,4 +155,25 @@ describe('Hash map', () => {
       expect(hash.get('grape')).toBe(null);
     });
   });
+
+  describe('Keys', () => {
+    beforeEach(() => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+      hash.set('hat', 'black');
+      hash.set('grape', 'purple');
+      hash.set('carrot', 'orange');
+    });
+
+    test('Returns an array containing all the keys in the hash map', () => {
+      expect(hash.keys().sort()).toEqual(
+        ['apple', 'banana', 'hat', 'grape', 'carrot'].sort(),
+      );
+    });
+
+    test('Return empty array if the hash map is empty', () => {
+      hash.clear();
+      expect(hash.keys().sort()).toEqual([]);
+    });
+  });
 });
