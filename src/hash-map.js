@@ -131,50 +131,33 @@ export class HashMap {
   }
 
   keys() {
-    const keys = [];
-
-    for (const bucket of this.#array) {
-      if (!bucket) continue;
-
-      let node = bucket;
-      do {
-        keys.push(node.key);
-        node = node.nextNode;
-      } while (node);
-    }
-
-    return keys;
+    return this.#getData(true, false);
   }
 
   values() {
-    const values = [];
-
-    for (const bucket of this.#array) {
-      if (!bucket) continue;
-
-      let node = bucket;
-      do {
-        values.push(node.value);
-        node = node.nextNode;
-      } while (node);
-    }
-
-    return values;
+    return this.#getData(false, true);
   }
 
   entries() {
-    const entries = [];
+    return this.#getData(true, true);
+  }
+
+  #getData(key = false, value = false) {
+    const data = [];
 
     for (const bucket of this.#array) {
       if (!bucket) continue;
 
       let node = bucket;
       do {
-        entries.push([node.key, node.value]);
+        if (key && value) data.push([node.key, node.value]);
+        else if (key) data.push(node.key);
+        else if (value) data.push(node.value);
+
         node = node.nextNode;
       } while (node);
     }
 
-    return entries;
+    return data;
   }
 }
