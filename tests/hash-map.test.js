@@ -125,4 +125,34 @@ describe('Hash map', () => {
       expect(hash.get('grape')).toBe('purple');
     });
   });
+
+  describe('Clear', () => {
+    beforeEach(() => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+      hash.set('hat', 'black');
+      hash.set('grape', 'purple');
+      hash.set('carrot', 'orange');
+    });
+
+    test('Remove all entries in the hash map', () => {
+      expect(hash.length()).toBe(5);
+
+      hash.clear();
+      expect(hash.length()).toBe(0);
+      expect(hash.get('grape')).toBe(null);
+      expect(hash.get('banana')).toBe(null);
+    });
+
+    test('Able to add entry after clear', () => {
+      hash.clear();
+
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+
+      expect(hash.get('apple')).toBe('red');
+      expect(hash.get('banana')).toBe('yellow');
+      expect(hash.get('grape')).toBe(null);
+    });
+  });
 });

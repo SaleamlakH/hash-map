@@ -123,4 +123,10 @@ export class HashMap {
 
     return false;
   }
+
+  clear() {
+    this.#array = new Array(16);
+    this.#length = 0;
+    this.#capacity = 16;
+  }
 }
