@@ -145,4 +145,20 @@ export class HashMap {
 
     return keys;
   }
+
+  values() {
+    const values = [];
+
+    for (const bucket of this.#array) {
+      if (!bucket) continue;
+
+      let node = bucket;
+      do {
+        values.push(node.value);
+        node = node.nextNode;
+      } while (node);
+    }
+
+    return values;
+  }
 }

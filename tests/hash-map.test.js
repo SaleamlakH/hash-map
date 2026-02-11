@@ -176,4 +176,25 @@ describe('Hash map', () => {
       expect(hash.keys().sort()).toEqual([]);
     });
   });
+
+  describe('Values', () => {
+    beforeEach(() => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+      hash.set('hat', 'black');
+      hash.set('grape', 'purple');
+      hash.set('carrot', 'orange');
+    });
+
+    test('Returns an array containing all values inside the hash map', () => {
+      expect(hash.values().sort()).toEqual(
+        ['red', 'yellow', 'black', 'purple', 'orange'].sort(),
+      );
+    });
+
+    test('Returns empty array for empty hash map', () => {
+      hash.clear();
+      expect(hash.values()).toEqual([]);
+    });
+  });
 });
