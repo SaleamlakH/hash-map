@@ -12,6 +12,14 @@ export class HashMap {
   #capacity = 16;
   #loadFactor = 0.75;
 
+  table() {
+    return this.#array;
+  }
+
+  capacity() {
+    return this.#capacity;
+  }
+
   #hash(key) {
     let hashCode = 0;
 
