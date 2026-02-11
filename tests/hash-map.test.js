@@ -68,4 +68,61 @@ describe('Hash map', () => {
       expect(hash.has('apple')).toBe(false);
     });
   });
+
+  describe('Remove', () => {
+    test('Remove existing entry with the key and return true', () => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+
+      expect(hash.remove('apple')).toBe(true);
+      expect(hash.get('apple')).toBe(null);
+    });
+
+    test('Return false when the key does not exist', () => {
+      expect(hash.remove('apple')).toBe(false);
+    });
+
+    test('Decrease the length after removing an entry', () => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+      hash.remove('apple');
+
+      expect(hash.length()).toBe(1);
+    });
+
+    test('Remove only target entry node from a bucket', () => {
+      hash.set('grape', 'purple');
+      hash.set('appl', 'red'); //mis-spelled to get the same hash code
+      hash.set('hat', 'black');
+
+      expect(hash.remove('grape')).toBe(true);
+      expect(hash.get('grape')).toBe(null);
+    });
+
+    test('Remove head entry keeps the rest entries of bucket', () => {
+      hash.set('grape', 'purple');
+      hash.set('appl', 'red'); //mis-spelled to get the same hash code
+      hash.set('hat', 'black');
+      hash.remove('grape');
+
+      expect(hash.get('hat')).toBe('black');
+    });
+
+    test('Remove the tail node of the bucket', () => {
+      hash.set('grape', 'purple');
+      hash.set('appl', 'red'); //mis-spelled to get the same hash code
+      hash.set('hat', 'black');
+
+      expect(hash.remove('hat')).toBe(true);
+      expect(hash.get('hat')).toBe(null);
+    });
+
+    test('Remove the tail node keeps rest entries of the bucket', () => {
+      hash.set('grape', 'purple');
+      hash.set('appl', 'red'); //mis-spelled to get the same hash code
+      hash.set('hat', 'black');
+
+      expect(hash.get('grape')).toBe('purple');
+    });
+  });
 });

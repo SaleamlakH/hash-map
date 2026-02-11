@@ -86,4 +86,41 @@ export class HashMap {
     //convert the result of get() into boolean
     return !!this.get(key);
   }
+
+  remove(key) {
+    const hashCode = this.#hash(key);
+
+    const bucket = this.#array[hashCode];
+    if (!bucket) return false;
+
+    let headNode = bucket;
+    if (headNode.key === key) {
+      // is it the only element
+      if (!headNode.nextNode) {
+        // create a hole instead of setting to null/undefined;
+        delete this.#array[hashCode];
+      } else {
+        this.#array[hashCode] = headNode.nextNode;
+      }
+
+      this.#length--;
+      return true;
+    }
+
+    let prevNode = headNode;
+    let node = prevNode.nextNode;
+    while (node) {
+      if (node.key === key) {
+        prevNode.nextNode = node.nextNode;
+
+        this.#length--;
+        return true;
+      }
+
+      prevNode = node;
+      node = node.nextNode;
+    }
+
+    return false;
+  }
 }
