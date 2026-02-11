@@ -49,6 +49,8 @@ export class HashMap {
 
       this.#array[hashCode] = node;
       this.#length++;
+
+      if (this.#isSizeExceedLimit()) this.#doubleSize();
       return;
     }
 
@@ -70,6 +72,8 @@ export class HashMap {
 
     lastNode.nextNode = new Node(key, value);
     this.#length++;
+
+    if (this.#isSizeExceedLimit()) this.#doubleSize();
   }
 
   get(key) {
@@ -167,5 +171,28 @@ export class HashMap {
     }
 
     return data;
+  }
+
+  #doubleSize() {
+    this.#capacity *= 2;
+    this.#length = 0;
+
+    const copyArray = [...this.#array];
+    this.#array = new Array(this.#capacity);
+
+    // rehashing
+    for (const bucket of copyArray) {
+      if (!bucket) continue;
+
+      let node = bucket;
+      do {
+        this.set(node.key, node.value);
+        node = node.nextNode;
+      } while (node);
+    }
+  }
+
+  #isSizeExceedLimit() {
+    return this.#length > this.#capacity * this.#loadFactor;
   }
 }

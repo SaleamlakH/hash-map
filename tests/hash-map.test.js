@@ -219,4 +219,41 @@ describe('Hash map', () => {
       );
     });
   });
+
+  describe('Hash map Load factor reach', () => {
+    beforeEach(() => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+      hash.set('carrot', 'orange');
+      hash.set('dog', 'brown');
+      hash.set('elephant', 'gray');
+      hash.set('frog', 'green');
+      hash.set('grape', 'purple');
+      hash.set('hat', 'black');
+      hash.set('ice cream', 'white');
+      hash.set('jacket', 'blue');
+      hash.set('kite', 'pink');
+      hash.set('lion', 'golden');
+    });
+
+    test('Double the capacity', () => {
+      hash.set('moon', 'silver');
+      expect(hash.capacity()).toBe(32);
+    });
+
+    test('Double table/array size', () => {
+      hash.set('moon', 'silver');
+      expect(hash.table().length).toBe(32);
+    });
+
+    test('Entries are accessible after increasing the size', () => {
+      hash.set('moon', 'silver');
+      expect(hash.get('apple')).toBe('red');
+    });
+
+    test('Length is the same after increasing the size', () => {
+      hash.set('moon', 'silver');
+      expect(hash.length()).toBe(13);
+    });
+  });
 });
