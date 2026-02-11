@@ -161,4 +161,20 @@ export class HashMap {
 
     return values;
   }
+
+  entries() {
+    const entries = [];
+
+    for (const bucket of this.#array) {
+      if (!bucket) continue;
+
+      let node = bucket;
+      do {
+        entries.push([node.key, node.value]);
+        node = node.nextNode;
+      } while (node);
+    }
+
+    return entries;
+  }
 }

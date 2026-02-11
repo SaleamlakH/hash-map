@@ -197,4 +197,26 @@ describe('Hash map', () => {
       expect(hash.values()).toEqual([]);
     });
   });
+
+  describe('Entries', () => {
+    beforeEach(() => {
+      hash.set('apple', 'red');
+      hash.set('banana', 'yellow');
+      hash.set('hat', 'black');
+      hash.set('grape', 'purple');
+      hash.set('carrot', 'orange');
+    });
+
+    test('Return an array contains key and value pair', () => {
+      expect(hash.entries().sort()).toEqual(
+        [
+          ['apple', 'red'],
+          ['banana', 'yellow'],
+          ['hat', 'black'],
+          ['grape', 'purple'],
+          ['carrot', 'orange'],
+        ].sort(),
+      );
+    });
+  });
 });
