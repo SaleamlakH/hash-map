@@ -134,13 +134,13 @@ export class HashMap {
       if (!bucket) continue;
 
       let node = bucket;
-      do {
+      while (node) {
         if (key && value) data.push([node.key, node.value]);
         else if (key) data.push(node.key);
         else if (value) data.push(node.value);
 
         node = node.nextNode;
-      } while (node);
+      };
     }
 
     return data;
@@ -158,10 +158,10 @@ export class HashMap {
       if (!bucket) continue;
 
       let node = bucket;
-      do {
+      while(node) {
         this.set(node.key, node.value);
         node = node.nextNode;
-      } while (node);
+      }
     }
   }
 
