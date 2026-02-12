@@ -40,100 +40,73 @@ export class HashMap {
   }
 
   set(key, value) {
-    const hashCode = this.#hash(key);
+    // prevNode is null for headNode
+    let { node, prevNode, hashCode } = this.#getNode(key);
 
-    // Add a new node if it is empty
-    const bucket = this.#array[hashCode];
-    if (!bucket) {
-      const node = new Node(key, value);
-
-      this.#array[hashCode] = node;
-      this.#length++;
-
-      if (this.#isSizeExceedLimit()) this.#doubleSize();
+    // update its value
+    if (node) {
+      node.value = value;
       return;
     }
 
-    // traverse the linked list of the bucket
-    let node = bucket;
-
-    // track the last node to append a node if
-    // there is no matching keys
-    let lastNode = node;
-    while (node) {
-      if (node.key === key) {
-        node.value = value;
-        return;
-      }
-
-      lastNode = node;
-      node = node.nextNode;
+    // no entry at hashCode
+    if (!prevNode) {
+      this.#array[hashCode] = new Node(key, value);
+    } else {
+      prevNode.nextNode = new Node(key, value);
     }
 
-    lastNode.nextNode = new Node(key, value);
     this.#length++;
-
     if (this.#isSizeExceedLimit()) this.#doubleSize();
   }
 
   get(key) {
-    const hashCode = this.#hash(key);
+    let { node } = this.#getNode(key);
+    return node ? node.value : null;
+  }
 
+  has(key) {
+    let { node } = this.#getNode(key);
+    return node ? true : false;
+  }
+
+  remove(key) {
+    let { node, prevNode, hashCode } = this.#getNode(key);
+
+    if (!node) return false;
+
+    if (!prevNode) {
+      // is it the only node
+      if (!node.nextNode) {
+        // create a hole so it act as initially created
+        delete this.#array[hashCode];
+      } else {
+        this.#array[hashCode] = node.nextNode;
+      }
+    } else {
+      prevNode.nextNode = node.nextNode;
+    }
+
+    this.#length--;
+    return true;
+  }
+
+  #getNode(key) {
+    const hashCode = this.#hash(key);
     let node = this.#array[hashCode];
-    if (!node) return null;
+    let prevNode = null;
 
     // traverse over the list
     while (node) {
       if (node.key === key) {
-        return node.value;
-      }
-
-      node = node.nextNode;
-    }
-
-    return null;
-  }
-
-  has(key) {
-    //convert the result of get() into boolean
-    return !!this.get(key);
-  }
-
-  remove(key) {
-    const hashCode = this.#hash(key);
-
-    const bucket = this.#array[hashCode];
-    if (!bucket) return false;
-
-    let headNode = bucket;
-    if (headNode.key === key) {
-      // is it the only element
-      if (!headNode.nextNode) {
-        // create a hole instead of setting to null/undefined;
-        delete this.#array[hashCode];
-      } else {
-        this.#array[hashCode] = headNode.nextNode;
-      }
-
-      this.#length--;
-      return true;
-    }
-
-    let prevNode = headNode;
-    let node = prevNode.nextNode;
-    while (node) {
-      if (node.key === key) {
-        prevNode.nextNode = node.nextNode;
-
-        this.#length--;
-        return true;
+        return { node, prevNode, hashCode };
       }
 
       prevNode = node;
       node = node.nextNode;
     }
 
-    return false;
+    return { node: null, prevNode, hashCode };
   }
 
   clear() {
